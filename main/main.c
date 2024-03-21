@@ -5,11 +5,13 @@
 #include "mdns.h"
 #include "nvs_flash.h"
 #include "web_server.h"
+#include "a4988_driver.h"
+#include "pin_definitions.h"
 
 #include <stdio.h>
 #include <string.h>
 
-#define SSID "ESP32"
+#define SSID "Star Tracker"
 #define PASSWORD "fuckfuck"
 #define CHANNEL 11
 
@@ -86,6 +88,21 @@ void mdns_service_init()
     ESP_LOGI(TAG, "mDNS initialised!");
 }
 
+void stepper_init()
+{
+    const a4988_driver_config_t a4988_config = {
+        .dir_gpio = A4988_DIR_PIN,
+        .step_gpio = A4988_STEP_PIN,
+        .enable_gpio = A4988_EN_PIN,
+        .sleep_gpio = A4988_SLP_PIN,
+        .reset_gpio = A4988_RST_PIN,
+        .ms1_gpio = A4988_MS1_PIN,
+        .ms2_gpio = A4988_MS2_PIN,
+        .ms3_gpio = A4988_MS3_PIN,
+    };
+    a4988_driver_init(&a4988_config);
+}
+
 void app_main(void)
 {
     esp_err_t ret = nvs_flash_init();
@@ -97,6 +114,7 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
+    stepper_init();
     wifi_init();
     mdns_service_init();
     web_server_init();

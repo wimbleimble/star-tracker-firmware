@@ -1,6 +1,7 @@
 #include "web_server.h"
 #include "esp_http_server.h"
 #include "esp_log.h"
+#include "a4988_driver.h"
 
 static const char* TAG = "WEB SERVER";
 static bool current_state = false;
@@ -26,9 +27,9 @@ esp_err_t get_state(httpd_req_t* req)
 
 esp_err_t set_state(httpd_req_t* req)
 {
-    char new_state;
+    char new_state_raw;
 
-    int ret = httpd_req_recv(req, &new_state, 1);
+    int ret = httpd_req_recv(req, &new_state_raw, 1);
     if (ret <= 0)
     {
         if (ret == HTTPD_SOCK_ERR_TIMEOUT)
@@ -38,9 +39,18 @@ esp_err_t set_state(httpd_req_t* req)
         }
         return ESP_FAIL;
     }
-    ESP_LOGI(TAG, "new state: %c", new_state);
+    ESP_LOGI(TAG, "new state: %c", new_state_raw);
+
+    bool new_state = new_state_raw == '1';
+    if (new_state == current_state)
+        return ESP_OK;
     
-    current_state = new_state == '1';
+    if(new_state)
+        a4988_rotate_continuous(0.21);
+    else
+        a4988_stop();
+
+    current_state = new_state;
 
     httpd_resp_send(req, current_state ? "1" : "0", HTTPD_RESP_USE_STRLEN);
     return ESP_OK;

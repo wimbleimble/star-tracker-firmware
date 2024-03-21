@@ -8,7 +8,9 @@ project(star_tracker)
 add_custom_command(
     OUTPUT ${PROJECT_BINARY_DIR}/index.html
     COMMAND pug ${PROJECT_SOURCE_DIR}/web_front_end/index.pug -o ${PROJECT_BINARY_DIR}
-    DEPENDS ${PROJECT_SOURCE_DIR}/web_front_end/index.pug)
+    DEPENDS ${PROJECT_SOURCE_DIR}/web_front_end/index.pug
+    ${PROJECT_SOURCE_DIR}/web_front_end/index.js
+    ${PROJECT_SOURCE_DIR}/web_front_end/style.css)
 
 add_custom_command(
     OUTPUT ${PROJECT_BINARY_DIR}/index.html.gz
