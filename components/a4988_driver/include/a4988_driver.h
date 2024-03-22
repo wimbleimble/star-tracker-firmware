@@ -17,6 +17,5 @@ typedef struct a4988_driver_config {
 void a4988_driver_init(const a4988_driver_config_t* config);
 void a4988_rotate_continuous(double omega);
 void a4988_stop();
-void a4988_set_direction(uint32_t direction);
 
 #endif

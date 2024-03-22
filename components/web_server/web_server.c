@@ -70,7 +70,6 @@ httpd_uri_t endpoint_set_state = {
 
 httpd_handle_t web_server_init(void)
 {
-    ESP_LOGI(TAG, "Initialising web server");
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     httpd_handle_t server = NULL;
 

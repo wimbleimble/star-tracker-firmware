@@ -25,7 +25,6 @@ void a4988_driver_init(const a4988_driver_config_t* config)
         | (1ULL << config->ms1_gpio) | (1ULL << config->ms2_gpio)
         | (1ULL << config->ms3_gpio) | (1ULL << config->sleep_gpio)
         | (1ULL << config->enable_gpio) | (1ULL << config->reset_gpio);
-    ESP_LOGI(TAG, "gpio_bit_mask %" PRIu64, gpio_bit_mask);
 
     gpio_config_t gpio_cfg = { .intr_type = GPIO_INTR_DISABLE,
                                .mode = GPIO_MODE_OUTPUT,
@@ -76,8 +75,6 @@ void a4988_rotate_continuous(double omega)
     ESP_ERROR_CHECK(gpio_set_level(driver_config.enable_gpio, 0));
     vTaskDelay(1 / portTICK_PERIOD_MS);
 
-    ESP_LOGI(TAG, "t1: %d, t2: %" PRIu32 " t2/2: %" PRIu16, t1, t2, block[1].duration0);
-
     ESP_ERROR_CHECK(rmt_enable(tx_chan));
     ESP_ERROR_CHECK(rmt_transmit(
         tx_chan,
@@ -93,4 +90,3 @@ void a4988_stop()
     ESP_ERROR_CHECK(gpio_set_level(driver_config.enable_gpio, 1));
     ESP_ERROR_CHECK(gpio_set_level(driver_config.sleep_gpio, 0));
 }
-void a4988_set_direction(uint32_t direction) {}

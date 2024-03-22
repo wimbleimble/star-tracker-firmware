@@ -19,4 +19,12 @@
 #define IO_PIN_6 GPIO_NUM_27
 #define IO_PIN_7 GPIO_NUM_35
 
+// WIFI Config
+#define SSID "Star Tracker"
+#define PASSWORD "fuckfuck"
+#define CHANNEL 11
+#define HOSTNAME "star-tracker"
+#define FRIENDLY_NAME "Star Tracker"
+#define MAX_CONNECTIONS 2
+
 #endif

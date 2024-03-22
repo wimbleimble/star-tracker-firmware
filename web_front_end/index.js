@@ -29,4 +29,5 @@ window.onload = async () => {
     }
     const resp = await fetch("/get_state");    
     set_state(Boolean(Number(await resp.text())));
+    document.getElementsByTagName("main")[0].classList.add("fade-in");
 }
