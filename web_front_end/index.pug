@@ -11,7 +11,15 @@ html(lang='en')
     body
         main
             h1 Star Tracker Ground Control
-            div.horizontal
+            div.step_mode_container
+                label(for='step_mode') Step Mode:
+                select(name='step_mode' id='step_mode')
+                    option(value=1) Full
+                    option(value=2) 1&frasl;2
+                    option(value=4) 1&frasl;4
+                    option(value=8) 1&frasl;8
+                    option(value=16) 1&frasl;16
+            div.start_container
                 div.star.flip ✨
                 button#butt
                 div.star ✨

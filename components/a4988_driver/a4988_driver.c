@@ -9,6 +9,14 @@
 #define RMT_RESOLUTION (1 * 1000 * 1000)
 #define PULSE_LENGTH_US ((uint16_t)2)
 #define PI ((double)3.1415926)
+static const uint8_t STEP_MODE_TO_LOGIC[] = {
+    0b000,
+    0b001,
+    0b010,
+    0b011,
+    0b111,
+    0b1111 // Error value - corresponds to STEP_MODE_MAX. Shouldn't be returned.
+};
 
 static a4988_driver_config_t driver_config;
 static rmt_channel_handle_t tx_chan = NULL;
@@ -16,6 +24,8 @@ static const rmt_transmit_config_t tx_config = {
     .loop_count = -1, .flags.eot_level = 0, .flags.queue_nonblocking = false
 };
 static rmt_encoder_handle_t copy_encoder_handle;
+static step_mode_t step_mode = STEP_MODE_FULL;
+
 const char* TAG = "a4988_driver";
 
 void a4988_driver_init(const a4988_driver_config_t* config)
@@ -64,8 +74,9 @@ void a4988_rotate_continuous(double omega)
         { .level0 = 0, .level1 = 0, },
         { .level0 = 0, .level1 = 0, }
     };
+    const uint8_t step_mode_mul = STEP_MODE_TO_MUL(step_mode);
     const uint32_t t2 =
-        ((uint32_t)(((double)RMT_RESOLUTION * 2.0 * PI) / (omega * 400.0)) - (uint32_t)t1);
+        ((uint32_t)(((double)RMT_RESOLUTION * 2.0 * PI) / (omega * 400.0 * step_mode_mul)) - (uint32_t)t1);
 
     block[1].duration0 = (uint16_t)(t2/4);
     block[1].duration1 = (uint16_t)(t2/4);
@@ -82,6 +93,20 @@ void a4988_rotate_continuous(double omega)
         &block,
         3 * sizeof(rmt_symbol_word_t),
         &tx_config));
+}
+
+void a4988_set_step_mode(step_mode_t mode)
+{
+    step_mode = mode;
+    const uint8_t logic_levels = STEP_MODE_TO_LOGIC[mode];
+    ESP_ERROR_CHECK(gpio_set_level(driver_config.ms1_gpio, (uint8_t)logic_levels & 0b001));
+    ESP_ERROR_CHECK(gpio_set_level(driver_config.ms2_gpio, ((uint8_t)logic_levels & 0b010) >> 1));
+    ESP_ERROR_CHECK(gpio_set_level(driver_config.ms3_gpio, ((uint8_t)logic_levels & 0b100) >> 2));
+}
+
+step_mode_t a4988_get_step_mode()
+{
+    return step_mode;
 }
 
 void a4988_stop()

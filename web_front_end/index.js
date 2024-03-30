@@ -1,6 +1,7 @@
 window.onload = async () => {
     const button = document.getElementById("butt");
     const status_box = document.getElementById("status");
+    const step_mode_sel = document.getElementById("step_mode");
     let state;
     button.addEventListener("click", async () =>
     {
@@ -10,6 +11,14 @@ window.onload = async () => {
         });
         set_state(!state);
     });
+    step_mode_sel.addEventListener("change", async () =>
+    {
+        await fetch("/set_step_mode", {
+            method: "POST",
+            body: step_mode_sel.value
+        });
+    }
+    );
     function set_state(new_state)
     {
         if(new_state == state)
@@ -27,7 +36,9 @@ window.onload = async () => {
         }
         state = new_state;
     }
-    const resp = await fetch("/get_state");    
-    set_state(Boolean(Number(await resp.text())));
+    const state_resp = await fetch("/get_state");    
+    const step_resp = await fetch("/get_step_mode");    
+    set_state(Boolean(Number(await state_resp.text())));
+    step_mode_sel.selectedIndex = Math.log2(Number(await step_resp.text()));
     document.getElementsByTagName("main")[0].classList.add("fade-in");
 }
