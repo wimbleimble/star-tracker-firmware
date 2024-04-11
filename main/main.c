@@ -7,7 +7,7 @@
 
 static const char* TAG = "Main";
 
-void stepper_init()
+static inline void stepper_init()
 {
     const a4988_driver_config_t a4988_config = {
         .dir_gpio = A4988_DIR_PIN,

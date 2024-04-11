@@ -20,8 +20,17 @@ html(lang='en')
                     option(value=8) 1&frasl;8
                     option(value=16) 1&frasl;16
             div.start_container
-                div.star.flip ✨
-                button#butt
-                div.star ✨
+                div.star.flip
+                    include icons/star.svg
+                button#rewind.flip
+                    include icons/forward.svg
+                button#play_stop
+                    span#play
+                        include icons/play.svg
+                    span#stop.hide
+                        include icons/stop.svg
+                button#ffwd
+                    include icons/forward.svg
+                div.star
+                    include icons/star.svg
             div#status
-            

@@ -46,6 +46,7 @@ main {
 
 .star {
     font-size: 3em;
+    color: gold;
 }
 
 .flip {
@@ -60,16 +61,16 @@ h1 {
 button {
     border: none;
     border-radius: 0.2em;
-    background-color: white;
+    background: none;
+    color: white;
     font-size: 2em;
     text-decoration: none;
     padding: 0.5em;
     font-family: "Courier New", monospace;
-    width: 4.6em;
 }
 
 button:hover {
-    background-color: lightblue;
+    color: gold;
 }
 
 select {
@@ -81,4 +82,14 @@ select {
     padding: 0.1em;
     font-family: "Courier New", monospace;
     margin-left: 1em;
+}
+
+svg {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+}
+
+.hide {
+    display: none;
 }

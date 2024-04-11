@@ -10,6 +10,7 @@
 
 static const char* TAG = "Network";
 
+// -- Private Functions --------------------------------------------------------
 static void wifi_event_handler(
     void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
@@ -35,6 +36,7 @@ static void wifi_event_handler(
     }
 }
 
+// -- Public Functions ---------------------------------------------------------
 void wifi_init()
 {
     ESP_ERROR_CHECK(esp_netif_init());

@@ -21,10 +21,10 @@
 
 // WIFI Config
 #define SSID "Star Tracker"
-#define PASSWORD "fuckfuck"
+#define PASSWORD "andromeda"
 #define CHANNEL 11
 #define HOSTNAME "star-tracker"
 #define FRIENDLY_NAME "Star Tracker"
-#define MAX_CONNECTIONS 2
+#define MAX_CONNECTIONS 5
 
 #endif
