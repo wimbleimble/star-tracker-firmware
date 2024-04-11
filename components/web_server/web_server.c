@@ -17,7 +17,8 @@ typedef enum motor_state {
 
 // -- Configuration ------------------------------------------------------------
 #define ROTATION_RATE (0.21)
-#define BOOST_ROTATION_RATE (6.28)
+//#define BOOST_ROTATION_RATE (6.28)
+#define BOOST_ROTATION_RATE (12)
 static const char* TAG = "Web Server";
 
 // -- Global State -------------------------------------------------------------
@@ -209,8 +210,22 @@ esp_err_t set_step_mode(httpd_req_t* req)
     a4988_set_step_mode(step_mode);
 
     // FIX this shit
-    if (current_state)
+    switch (current_state)
+    {
+    case STATE_OFF:
+        break;
+    case STATE_NORMAL:
         a4988_rotate_continuous(ROTATION_RATE, A4988_DEFAULT_DIRECTION);
+        break;
+    case STATE_BOOST:
+        a4988_rotate_continuous(BOOST_ROTATION_RATE, A4988_DEFAULT_DIRECTION);
+        break;
+    case STATE_REWIND:
+        a4988_rotate_continuous(BOOST_ROTATION_RATE, !A4988_DEFAULT_DIRECTION);
+        break;
+    default:
+        break;
+    }
 
     return get_step_mode(req);
 }
