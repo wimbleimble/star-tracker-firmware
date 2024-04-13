@@ -73,9 +73,12 @@ async function state_transition(new_state, ui) {
 async function sync_state(ui) {
     const state_resp = await fetch("/get_state");
     const step_resp = await fetch("/get_step_mode");
+    const target_resp = await fetch("/get_target");
+
     const state = Number(await state_resp.text())
 
     ui.step_mode_sel.selectedIndex = Math.log2(Number(await step_resp.text()));
+    ui.target_sel.selectedIndex = Math.log2(Number(await target_resp.text()));
     update_ui(state, ui);
 
     return state;
@@ -90,6 +93,7 @@ window.onload = async () => {
         ffwd: document.getElementById("ffwd"),
         status_box: document.getElementById("status"),
         step_mode_sel: document.getElementById("step_mode"),
+        target_sel: document.getElementById("target")
     };
 
     let state = await sync_state(ui);
@@ -108,8 +112,13 @@ window.onload = async () => {
             method: "POST",
             body: ui.step_mode_sel.value
         });
-    }
-    );
+    });
+    ui.target_sel.addEventListener("change", async () => {
+        await fetch("/set_target", {
+            method: "POST",
+            body: ui.target_sel.value
+        });
+    });
 
     document.getElementsByTagName("main")[0].classList.add("fade-in");
 }

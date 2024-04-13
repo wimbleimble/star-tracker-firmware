@@ -10,16 +10,24 @@ html(lang='en')
             include index.js
     body
         main
-            h1 Star Tracker Ground Control
-            div.step_mode_container
-                label(for='step_mode') Step Mode:
-                select(name='step_mode' id='step_mode')
-                    option(value=1) Full
-                    option(value=2) 1&frasl;2
-                    option(value=4) 1&frasl;4
-                    option(value=8) 1&frasl;8
-                    option(value=16) 1&frasl;16
-            div.start_container
+            div.h.full_width.center
+                h1 Twinkle Tracker Ground Control
+            div.adapt.even.full_width.margin
+                div.v.center
+                    label(for='step_mode') Step Mode:
+                    select(name='step_mode' id='step_mode')
+                        option(value=1) Full
+                        option(value=2) 1&frasl;2
+                        option(value=4) 1&frasl;4
+                        option(value=8) 1&frasl;8
+                        option(value=16) 1&frasl;16
+                div.v.center
+                    label(for='target') Target:
+                    select(name='target' id='target')
+                        option(value=0) Stars ⭐
+                        option(value=1) Sun ☀️
+                        option(value=2) Moon 🌕
+            div.h.center.full_width
                 div.star.flip
                     include icons/star.svg
                 button#rewind.flip
